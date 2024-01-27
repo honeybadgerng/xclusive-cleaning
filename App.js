@@ -3,12 +3,13 @@ import { StyleSheet, Text, View } from "react-native";
 import HomeScreen from "./screens/HomeScreen";
 import { Provider } from "react-redux";
 import store from "./store";
+import StackNavigator from "./StackNavigator";
 // import Carousel from "./components/Carousel";
 
 export default function App() {
   return (
     <Provider store={store}>
-      <HomeScreen />
+      <StackNavigator />
       <StatusBar style="auto" />
     </Provider>
   );
