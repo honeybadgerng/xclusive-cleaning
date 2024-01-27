@@ -15,7 +15,8 @@ import * as Location from "expo-location";
 import { MaterialIcons } from "@expo/vector-icons";
 import Services from "../components/Services";
 import DressItem from "../components/DressItem";
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
+import { getProducts } from "../ProductReducer";
 
 const HomeScreen = () => {
   const cart = useSelector((state) => state.cart.cart);
@@ -85,6 +86,17 @@ const HomeScreen = () => {
       }
     }
   };
+  const product = useSelector((state) => state.product.product);
+  const dispatch = useDispatch();
+  useEffect(() => {
+    if (product.length > 0) return;
+
+    const fetchProducts = () => {
+      services.map((service) => dispatch(getProducts(service)));
+    };
+    fetchProducts();
+  }, []);
+  console.log(product);
   const services = [
     {
       id: "0",
@@ -133,7 +145,7 @@ const HomeScreen = () => {
       image: "https://cdn-icons-png.flaticon.com/128/293/293241.png",
       name: "Sleeveless",
       quantity: 0,
-      price: 10,
+      price: 600,
     },
   ];
   return (
@@ -179,7 +191,7 @@ const HomeScreen = () => {
       {/* Services Component */}
       <Services />
       {/* Render all the Products */}
-      {services.map((item, index) => (
+      {product.map((item, index) => (
         <DressItem item={item} key={index} />
       ))}
     </ScrollView>
