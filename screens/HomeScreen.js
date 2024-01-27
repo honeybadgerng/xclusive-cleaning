@@ -217,11 +217,24 @@ const HomeScreen = () => {
           }}
         >
           <View>
-            <Text>{cart.length} items </Text>
-            <Text>extra charges might apply</Text>
+            <Text style={{ fontSize: 17, fontWeight: "600", color: "white" }}>
+              {cart.length} items{" "}
+            </Text>
+            <Text
+              style={{
+                fontSize: 15,
+                fontWeight: "400",
+                color: "white",
+                marginVertical: 6,
+              }}
+            >
+              extra charges might apply
+            </Text>
           </View>
           <Pressable>
-            <Text>proceed to pickup</Text>
+            <Text style={{ fontSize: 17, fontWeight: "600", color: "white" }}>
+              proceed to pickup
+            </Text>
           </Pressable>
         </Pressable>
       )}
