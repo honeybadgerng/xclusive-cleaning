@@ -9,6 +9,7 @@
     "web": "expo start --web"
   },
   "dependencies": {
+    "@awrminkhodaei/react-native-horizontal-datepicker": "^0.1.6",
     "@react-navigation/native": "^6.1.9",
     "@react-navigation/native-stack": "^6.9.17",
     "@reduxjs/toolkit": "^2.1.0",
@@ -16,6 +17,7 @@
     "expo": "~50.0.3",
     "expo-location": "~16.5.2",
     "expo-status-bar": "~1.11.1",
+    "moment-jalaali": "^0.10.0",
     "react": "18.2.0",
     "react-native": "0.73.2",
     "react-native-image-slider-box": "^2.0.7",
