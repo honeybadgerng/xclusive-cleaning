@@ -200,6 +200,26 @@ const HomeScreen = () => {
           <DressItem item={item} key={index} />
         ))}
       </ScrollView>
+      <Pressable
+        style={{
+          backgroundColor: "#088F8F",
+          padding: 10,
+          marginBottom: 40,
+          margin: 15,
+          borderRadius: 7,
+          flexDirection: "row",
+          alignItems: "center",
+          justifyContent: "space-between",
+        }}
+      >
+        <View>
+          <Text>{cart.length} items </Text>
+          <Text>extra charges might apply</Text>
+        </View>
+        <Pressable>
+          <Text>proceed to pickup</Text>
+        </Pressable>
+      </Pressable>
     </>
   );
 };
