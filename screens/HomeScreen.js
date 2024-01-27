@@ -218,7 +218,7 @@ const HomeScreen = () => {
         >
           <View>
             <Text style={{ fontSize: 17, fontWeight: "600", color: "white" }}>
-              {cart.length} items{" "}
+              {cart.length} items | ₦{total}
             </Text>
             <Text
               style={{
