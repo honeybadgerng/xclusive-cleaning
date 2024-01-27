@@ -12,6 +12,7 @@ import React, { useEffect, useState } from "react";
 import { Feather } from "@expo/vector-icons";
 import * as Location from "expo-location";
 import { MaterialIcons } from "@expo/vector-icons";
+import Services from "../components/Services";
 
 const HomeScreen = () => {
   const [displayCurrentAddress, setdisplayCurrentAddress] = useState(
@@ -118,6 +119,9 @@ const HomeScreen = () => {
       </View>
       {/* Image Carousel */}
       {/* <Carousel /> */}
+
+      {/* Services Component */}
+      <Services />
     </SafeAreaView>
   );
 };
