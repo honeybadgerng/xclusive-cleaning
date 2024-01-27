@@ -116,6 +116,8 @@ const HomeScreen = () => {
         <TextInput placeholder="Search for items or More" />
         <Feather name="search" size={24} color="#fd5c63" />
       </View>
+      {/* Image Carousel */}
+      {/* <Carousel /> */}
     </SafeAreaView>
   );
 };
