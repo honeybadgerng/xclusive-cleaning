@@ -15,8 +15,11 @@ import * as Location from "expo-location";
 import { MaterialIcons } from "@expo/vector-icons";
 import Services from "../components/Services";
 import DressItem from "../components/DressItem";
+import { useSelector } from "react-redux";
 
 const HomeScreen = () => {
+  const cart = useSelector((state) => state.cart.cart);
+  console.log(cart);
   const [displayCurrentAddress, setdisplayCurrentAddress] = useState(
     "Loading your location"
   );
