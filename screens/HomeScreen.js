@@ -20,6 +20,9 @@ import { getProducts } from "../ProductReducer";
 
 const HomeScreen = () => {
   const cart = useSelector((state) => state.cart.cart);
+  const total = cart
+    .map((item) => item.quantity * item.price)
+    .reduce((curr, prev) => curr + prev, 0);
   console.log(cart);
   const [displayCurrentAddress, setdisplayCurrentAddress] = useState(
     "Loading your location"
