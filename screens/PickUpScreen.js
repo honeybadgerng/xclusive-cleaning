@@ -1,9 +1,19 @@
-import { StyleSheet, Text, View, SafeAreaView, TextInput } from "react-native";
+import {
+  StyleSheet,
+  Text,
+  View,
+  SafeAreaView,
+  TextInput,
+  Pressable,
+  ScrollView,
+} from "react-native";
 import React, { useState } from "react";
 import HorizontalDatepicker from "@awrminkhodaei/react-native-horizontal-datepicker";
 
 const PickUpScreen = () => {
   const [selectedDate, setSelectedDate] = useState("");
+  const [selectedTime, setSelectedTime] = useState([]);
+  const [delivery, setDelivery] = useState([]);
   const deliveryTime = [
     {
       id: "0",
@@ -90,6 +100,63 @@ const PickUpScreen = () => {
       <Text style={{ fontSize: 16, fontWeight: "500", marginHorizontal: 10 }}>
         Select time
       </Text>
+      <ScrollView horizontal showsHorizontalScrollIndicator={false}>
+        {times.map((item, index) => (
+          <Pressable
+            key={index}
+            onPress={() => setSelectedTime(item.time)}
+            style={
+              selectedTime.includes(item.time)
+                ? {
+                    margin: 10,
+                    borderRadius: 7,
+                    padding: 15,
+                    borderColor: "red",
+                    borderWidth: 0.7,
+                  }
+                : {
+                    margin: 10,
+                    borderRadius: 7,
+                    padding: 15,
+                    borderColor: "gray",
+                    borderWidth: 0.7,
+                  }
+            }
+          >
+            <Text>{item.time}</Text>
+          </Pressable>
+        ))}
+      </ScrollView>
+      <Text style={{ fontSize: 16, fontWeight: "500", marginHorizontal: 10 }}>
+        Delivery Date
+      </Text>
+      <ScrollView horizontal showsHorizontalScrollIndicator={false}>
+        {deliveryTime.map((item, i) => (
+          <Pressable
+            style={
+              delivery.includes(item.name)
+                ? {
+                    margin: 10,
+                    borderRadius: 7,
+                    padding: 15,
+                    borderColor: "red",
+                    borderWidth: 0.7,
+                  }
+                : {
+                    margin: 10,
+                    borderRadius: 7,
+                    padding: 15,
+                    borderColor: "gray",
+                    borderWidth: 0.7,
+                  }
+            }
+            onPress={() => setDelivery(item.name)}
+            key={i}
+          >
+            <Text>{item.name}</Text>
+          </Pressable>
+        ))}
+      </ScrollView>
     </SafeAreaView>
   );
 };
