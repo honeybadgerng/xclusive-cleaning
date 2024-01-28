@@ -6,10 +6,12 @@ import {
   TextInput,
   Pressable,
   ScrollView,
+  Alert,
 } from "react-native";
 import React, { useState } from "react";
 import HorizontalDatepicker from "@awrminkhodaei/react-native-horizontal-datepicker";
 import { useSelector } from "react-redux";
+import { useNavigation } from "@react-navigation/native";
 
 const PickUpScreen = () => {
   const [selectedDate, setSelectedDate] = useState("");
@@ -68,6 +70,31 @@ const PickUpScreen = () => {
       time: "4:00 PM",
     },
   ];
+  const navigation = useNavigation();
+  const proceedToCart = () => {
+    if (!selectedDate || !selectedTime || !delivery) {
+      Alert.alert(
+        "Empty or invalid",
+        "Please select all the fields",
+        [
+          {
+            text: "Cancel",
+            onPress: () => console.log("Cancel Pressed"),
+            style: "cancel",
+          },
+          { text: "OK", onPress: () => console.log("OK Pressed") },
+        ],
+        { cancelable: false }
+      );
+    }
+    if (selectedDate && selectedTime && delivery) {
+      navigation.replace("Cart", {
+        pickUpDate: selectedDate,
+        // selectedTime: selectedTime,
+        // no_Of_days: delivery,
+      });
+    }
+  };
   return (
     <>
       <SafeAreaView>
@@ -193,7 +220,7 @@ const PickUpScreen = () => {
               extra charges might apply
             </Text>
           </View>
-          <Pressable>
+          <Pressable onPress={proceedToCart}>
             <Text style={{ fontSize: 17, fontWeight: "600", color: "white" }}>
               proceed to Cart
             </Text>
