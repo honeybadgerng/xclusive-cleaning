@@ -9,9 +9,14 @@ import {
 } from "react-native";
 import React, { useState } from "react";
 import HorizontalDatepicker from "@awrminkhodaei/react-native-horizontal-datepicker";
+import { useSelector } from "react-redux";
 
 const PickUpScreen = () => {
   const [selectedDate, setSelectedDate] = useState("");
+  const cart = useSelector((state) => state.cart.cart);
+  const total = cart
+    .map((item) => item.quantity * item.price)
+    .reduce((curr, prev) => curr + prev, 0);
   const [selectedTime, setSelectedTime] = useState([]);
   const [delivery, setDelivery] = useState([]);
   const deliveryTime = [
@@ -64,100 +69,138 @@ const PickUpScreen = () => {
     },
   ];
   return (
-    <SafeAreaView>
-      <Text style={{ fontSize: 16, fontWeight: "500", marginHorizontal: 10 }}>
-        enter Address
-      </Text>
-      <TextInput
-        style={{
-          padding: 40,
-          borderColor: "gray",
-          borderWidth: 0.7,
-          paddingVertical: 80,
-          borderRadius: 9,
-          margin: 10,
-        }}
-      />
-      <Text style={{ fontSize: 16, fontWeight: "500", marginHorizontal: 10 }}>
-        Pick Up Date
-      </Text>
-      <HorizontalDatepicker
-        mode="gregorian"
-        startDate={new Date("2024-01-20")}
-        endDate={new Date("2025-08-31")}
-        initialSelectedDate={new Date("2020-08-22")}
-        onSelectedDateChange={(date) => setSelectedDate(date)}
-        selectedItemWidth={170}
-        unselectedItemWidth={38}
-        itemHeight={38}
-        itemRadius={10}
-        selectedItemTextStyle={styles.selectedItemTextStyle}
-        unselectedItemTextStyle={styles.selectedItemTextStyle}
-        selectedItemBackgroundColor="#222831"
-        unselectedItemBackgroundColor="#ececec"
-        flatListContainerStyle={styles.flatListContainerStyle}
-      />
-      <Text style={{ fontSize: 16, fontWeight: "500", marginHorizontal: 10 }}>
-        Select time
-      </Text>
-      <ScrollView horizontal showsHorizontalScrollIndicator={false}>
-        {times.map((item, index) => (
-          <Pressable
-            key={index}
-            onPress={() => setSelectedTime(item.time)}
-            style={
-              selectedTime.includes(item.time)
-                ? {
-                    margin: 10,
-                    borderRadius: 7,
-                    padding: 15,
-                    borderColor: "red",
-                    borderWidth: 0.7,
-                  }
-                : {
-                    margin: 10,
-                    borderRadius: 7,
-                    padding: 15,
-                    borderColor: "gray",
-                    borderWidth: 0.7,
-                  }
-            }
-          >
-            <Text>{item.time}</Text>
+    <>
+      <SafeAreaView>
+        <Text style={{ fontSize: 16, fontWeight: "500", marginHorizontal: 10 }}>
+          enter Address
+        </Text>
+        <TextInput
+          style={{
+            padding: 40,
+            borderColor: "gray",
+            borderWidth: 0.7,
+            paddingVertical: 80,
+            borderRadius: 9,
+            margin: 10,
+          }}
+        />
+        <Text style={{ fontSize: 16, fontWeight: "500", marginHorizontal: 10 }}>
+          Pick Up Date
+        </Text>
+        <HorizontalDatepicker
+          mode="gregorian"
+          startDate={new Date("2024-01-20")}
+          endDate={new Date("2025-08-31")}
+          initialSelectedDate={new Date("2020-08-22")}
+          onSelectedDateChange={(date) => setSelectedDate(date)}
+          selectedItemWidth={170}
+          unselectedItemWidth={38}
+          itemHeight={38}
+          itemRadius={10}
+          selectedItemTextStyle={styles.selectedItemTextStyle}
+          unselectedItemTextStyle={styles.selectedItemTextStyle}
+          selectedItemBackgroundColor="#222831"
+          unselectedItemBackgroundColor="#ececec"
+          flatListContainerStyle={styles.flatListContainerStyle}
+        />
+        <Text style={{ fontSize: 16, fontWeight: "500", marginHorizontal: 10 }}>
+          Select time
+        </Text>
+        <ScrollView horizontal showsHorizontalScrollIndicator={false}>
+          {times.map((item, index) => (
+            <Pressable
+              key={index}
+              onPress={() => setSelectedTime(item.time)}
+              style={
+                selectedTime.includes(item.time)
+                  ? {
+                      margin: 10,
+                      borderRadius: 7,
+                      padding: 15,
+                      borderColor: "red",
+                      borderWidth: 0.7,
+                    }
+                  : {
+                      margin: 10,
+                      borderRadius: 7,
+                      padding: 15,
+                      borderColor: "gray",
+                      borderWidth: 0.7,
+                    }
+              }
+            >
+              <Text>{item.time}</Text>
+            </Pressable>
+          ))}
+        </ScrollView>
+        <Text style={{ fontSize: 16, fontWeight: "500", marginHorizontal: 10 }}>
+          Delivery Date
+        </Text>
+        <ScrollView horizontal showsHorizontalScrollIndicator={false}>
+          {deliveryTime.map((item, i) => (
+            <Pressable
+              style={
+                delivery.includes(item.name)
+                  ? {
+                      margin: 10,
+                      borderRadius: 7,
+                      padding: 15,
+                      borderColor: "red",
+                      borderWidth: 0.7,
+                    }
+                  : {
+                      margin: 10,
+                      borderRadius: 7,
+                      padding: 15,
+                      borderColor: "gray",
+                      borderWidth: 0.7,
+                    }
+              }
+              onPress={() => setDelivery(item.name)}
+              key={i}
+            >
+              <Text>{item.name}</Text>
+            </Pressable>
+          ))}
+        </ScrollView>
+      </SafeAreaView>
+
+      {total === 0 ? null : (
+        <Pressable
+          style={{
+            backgroundColor: "#088F8F",
+            padding: 10,
+            marginBottom: 40,
+            margin: 15,
+            borderRadius: 7,
+            flexDirection: "row",
+            alignItems: "center",
+            justifyContent: "space-between",
+          }}
+        >
+          <View>
+            <Text style={{ fontSize: 17, fontWeight: "600", color: "white" }}>
+              {cart.length} items | ₦{total}
+            </Text>
+            <Text
+              style={{
+                fontSize: 15,
+                fontWeight: "400",
+                color: "white",
+                marginVertical: 6,
+              }}
+            >
+              extra charges might apply
+            </Text>
+          </View>
+          <Pressable>
+            <Text style={{ fontSize: 17, fontWeight: "600", color: "white" }}>
+              proceed to Cart
+            </Text>
           </Pressable>
-        ))}
-      </ScrollView>
-      <Text style={{ fontSize: 16, fontWeight: "500", marginHorizontal: 10 }}>
-        Delivery Date
-      </Text>
-      <ScrollView horizontal showsHorizontalScrollIndicator={false}>
-        {deliveryTime.map((item, i) => (
-          <Pressable
-            style={
-              delivery.includes(item.name)
-                ? {
-                    margin: 10,
-                    borderRadius: 7,
-                    padding: 15,
-                    borderColor: "red",
-                    borderWidth: 0.7,
-                  }
-                : {
-                    margin: 10,
-                    borderRadius: 7,
-                    padding: 15,
-                    borderColor: "gray",
-                    borderWidth: 0.7,
-                  }
-            }
-            onPress={() => setDelivery(item.name)}
-            key={i}
-          >
-            <Text>{item.name}</Text>
-          </Pressable>
-        ))}
-      </ScrollView>
-    </SafeAreaView>
+        </Pressable>
+      )}
+    </>
   );
 };
 
