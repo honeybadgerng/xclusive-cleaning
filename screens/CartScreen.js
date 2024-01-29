@@ -308,8 +308,6 @@ const CartScreen = () => {
             </View>
           </>
         )}
-
-        <Text>CartScreen</Text>
       </ScrollView>
       {total === 0 ? null : (
         <Pressable
