@@ -133,7 +133,7 @@ const RegisterScreen = () => {
             }}
           >
             <Text style={{ fontSize: 18, textAlign: "center", color: "white" }}>
-              Login
+              Register
             </Text>
           </Pressable>
           <Pressable
