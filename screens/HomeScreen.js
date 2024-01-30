@@ -103,6 +103,7 @@ const HomeScreen = () => {
     };
     fetchProducts();
   }, []);
+  console.log(product);
 
   //   const fetchProducts = async () => {
   //     const colRef = collection(db, "types");
