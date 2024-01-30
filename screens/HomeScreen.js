@@ -18,6 +18,8 @@ import DressItem from "../components/DressItem";
 import { useDispatch, useSelector } from "react-redux";
 import { getProducts } from "../ProductReducer";
 import { useNavigation } from "@react-navigation/native";
+// import { collection, doc, getDoc, getDocs } from "firebase/firestore";
+// import { db } from "../firebase";
 
 const HomeScreen = () => {
   const cart = useSelector((state) => state.cart.cart);
@@ -101,7 +103,18 @@ const HomeScreen = () => {
     };
     fetchProducts();
   }, []);
-  console.log(product);
+
+  //   const fetchProducts = async () => {
+  //     const colRef = collection(db, "types");
+  //     const docsSnap = await getDocs(colRef);
+  //     docsSnap.forEach((doc) => {
+  //       items.push(doc.data());
+  //     });
+  //     items?.map((service) => dispatch(getProducts(service)));
+  //   };
+  //   fetchProducts();
+  // }, []);
+  // console.log(product);
   const services = [
     {
       id: "0",
