@@ -36,6 +36,7 @@ const CartScreen = () => {
       {
         orders: { ...cart },
         pickUpDetails: route.params,
+        total: total,
       },
       {
         merge: true,
