@@ -122,14 +122,14 @@ const HomeScreen = () => {
       image: "https://cdn-icons-png.flaticon.com/128/4643/4643574.png",
       name: "shirt",
       quantity: 0,
-      price: 600,
+      price: 650,
     },
     {
       id: "11",
       image: "https://cdn-icons-png.flaticon.com/128/892/892458.png",
       name: "T-shirt",
       quantity: 0,
-      price: 600,
+      price: 650,
     },
     {
       id: "12",
