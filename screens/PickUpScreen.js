@@ -12,8 +12,17 @@ import React, { useState } from "react";
 import HorizontalDatepicker from "@awrminkhodaei/react-native-horizontal-datepicker";
 import { useSelector } from "react-redux";
 import { useNavigation } from "@react-navigation/native";
+import DateTimePickerModal from "react-native-modal-datetime-picker";
 
 const PickUpScreen = () => {
+  const [email, setEmail] = useState("");
+  const [pickUpDate, setPickUpDate] = useState(null);
+  const [deliveryDate, setDeliveryDate] = useState(null);
+  const [isPickUpPickerVisible, setPickUpPickerVisible] = useState(false);
+  const [isDeliveryPickerVisible, setDeliveryPickerVisible] = useState(false);
+  const [pickUpAddress, setPickUpAddress] = useState("");
+  const [deliveryAddress, setDeliveryAddress] = useState("");
+  const [additionalInfo, setAdditionalInfo] = useState("");
   const [selectedDate, setSelectedDate] = useState("");
   const cart = useSelector((state) => state.cart.cart);
   const total = cart
@@ -21,6 +30,15 @@ const PickUpScreen = () => {
     .reduce((curr, prev) => curr + prev, 0);
   const [selectedTime, setSelectedTime] = useState([]);
   const [delivery, setDelivery] = useState([]);
+  const handlePickUpConfirm = (date) => {
+    setPickUpDate(date);
+    setPickUpPickerVisible(false);
+  };
+
+  const handleDeliveryConfirm = (date) => {
+    setDeliveryDate(date);
+    setDeliveryPickerVisible(false);
+  };
   const deliveryTime = [
     {
       id: "0",
@@ -72,10 +90,17 @@ const PickUpScreen = () => {
   ];
   const navigation = useNavigation();
   const proceedToCart = () => {
-    if (!selectedDate || !selectedTime || !delivery) {
+    // Debug: Log all state values
+    console.log("Pick Up Date:", pickUpDate);
+    console.log("Delivery Date:", deliveryDate);
+    console.log("Pick Up Address:", pickUpAddress);
+    console.log("Delivery Address:", deliveryAddress);
+
+    // Validate the fields
+    if (!pickUpDate || !deliveryDate || !pickUpAddress || !deliveryAddress) {
       Alert.alert(
         "Empty or invalid",
-        "Please select all the fields",
+        "Please fill all the required fields",
         [
           {
             text: "Cancel",
@@ -86,110 +111,88 @@ const PickUpScreen = () => {
         ],
         { cancelable: false }
       );
+      return;
     }
-    if (selectedDate && selectedTime && delivery) {
-      navigation.replace("Cart", {
-        pickUpDate: selectedDate,
-        selectedTime: selectedTime,
-        no_Of_days: delivery,
-      });
-    }
+
+    // Navigate to the Cart screen with the required data
+    navigation.replace("Cart", {
+      pickUpDate: pickUpDate,
+      deliveryDate: deliveryDate,
+      pickUpAddress: pickUpAddress,
+      deliveryAddress: deliveryAddress,
+    });
   };
+
   return (
     <>
-      <SafeAreaView style={{ marginTop: 50 }}>
-        <Text style={{ fontSize: 16, fontWeight: "500", marginHorizontal: 10 }}>
-          enter Address
-        </Text>
+      <SafeAreaView style={styles.container}>
+        <Text style={styles.label}>Email</Text>
         <TextInput
-          style={{
-            padding: 40,
-            borderColor: "gray",
-            borderWidth: 0.7,
-            paddingVertical: 80,
-            borderRadius: 9,
-            margin: 10,
-          }}
+          style={styles.input}
+          placeholder="Enter your email"
+          keyboardType="email-address"
+          autoCapitalize="none"
+          value={email}
+          onChangeText={(text) => setEmail(text)}
         />
-        <Text style={{ fontSize: 16, fontWeight: "500", marginHorizontal: 10 }}>
-          Pick Up Date
-        </Text>
-        <HorizontalDatepicker
-          mode="gregorian"
-          startDate={new Date("2024-01-20")}
-          endDate={new Date("2025-08-31")}
-          initialSelectedDate={new Date("2020-08-22")}
-          onSelectedDateChange={(date) => setSelectedDate(date)}
-          selectedItemWidth={170}
-          unselectedItemWidth={38}
-          itemHeight={38}
-          itemRadius={10}
-          selectedItemTextStyle={styles.selectedItemTextStyle}
-          unselectedItemTextStyle={styles.selectedItemTextStyle}
-          selectedItemBackgroundColor="#222831"
-          unselectedItemBackgroundColor="#ececec"
-          flatListContainerStyle={styles.flatListContainerStyle}
+        <Text style={styles.label}>Pick Up Address</Text>
+        <TextInput
+          style={styles.input}
+          placeholder="Enter pick up address"
+          value={pickUpAddress}
+          onChangeText={(text) => setPickUpAddress(text)}
         />
-        <Text style={{ fontSize: 16, fontWeight: "500", marginHorizontal: 10 }}>
-          Select time
-        </Text>
-        <ScrollView horizontal showsHorizontalScrollIndicator={false}>
-          {times.map((item, index) => (
-            <Pressable
-              key={index}
-              onPress={() => setSelectedTime(item.time)}
-              style={
-                selectedTime.includes(item.time)
-                  ? {
-                      margin: 10,
-                      borderRadius: 7,
-                      padding: 15,
-                      borderColor: "red",
-                      borderWidth: 0.7,
-                    }
-                  : {
-                      margin: 10,
-                      borderRadius: 7,
-                      padding: 15,
-                      borderColor: "gray",
-                      borderWidth: 0.7,
-                    }
-              }
-            >
-              <Text>{item.time}</Text>
-            </Pressable>
-          ))}
-        </ScrollView>
-        <Text style={{ fontSize: 16, fontWeight: "500", marginHorizontal: 10 }}>
-          Delivery Date
-        </Text>
-        <ScrollView horizontal showsHorizontalScrollIndicator={false}>
-          {deliveryTime.map((item, i) => (
-            <Pressable
-              style={
-                delivery.includes(item.name)
-                  ? {
-                      margin: 10,
-                      borderRadius: 7,
-                      padding: 15,
-                      borderColor: "red",
-                      borderWidth: 0.7,
-                    }
-                  : {
-                      margin: 10,
-                      borderRadius: 7,
-                      padding: 15,
-                      borderColor: "gray",
-                      borderWidth: 0.7,
-                    }
-              }
-              onPress={() => setDelivery(item.name)}
-              key={i}
-            >
-              <Text>{item.name}</Text>
-            </Pressable>
-          ))}
-        </ScrollView>
+
+        <Text style={styles.label}>Delivery Address</Text>
+        <TextInput
+          style={styles.input}
+          placeholder="Enter delivery address"
+          value={deliveryAddress}
+          onChangeText={(text) => setDeliveryAddress(text)}
+        />
+
+        <Text style={styles.label}>Pick Up Date</Text>
+        <Pressable
+          style={styles.dateButton}
+          onPress={() => setPickUpPickerVisible(true)}
+        >
+          <Text style={styles.dateText}>
+            {pickUpDate ? pickUpDate.toLocaleString() : "Select Pick Up Date"}
+          </Text>
+        </Pressable>
+        <DateTimePickerModal
+          isVisible={isPickUpPickerVisible}
+          mode="datetime"
+          onConfirm={handlePickUpConfirm}
+          onCancel={() => setPickUpPickerVisible(false)}
+        />
+
+        <Text style={styles.label}>Delivery Date</Text>
+        <Pressable
+          style={styles.dateButton}
+          onPress={() => setDeliveryPickerVisible(true)}
+        >
+          <Text style={styles.dateText}>
+            {deliveryDate
+              ? deliveryDate.toLocaleString()
+              : "Select Delivery Date"}
+          </Text>
+        </Pressable>
+        <DateTimePickerModal
+          isVisible={isDeliveryPickerVisible}
+          mode="datetime"
+          onConfirm={handleDeliveryConfirm}
+          onCancel={() => setDeliveryPickerVisible(false)}
+        />
+        {/* <Text style={styles.label}>Additional Info</Text>
+        <TextInput
+          style={styles.textArea}
+          placeholder="Enter any additional information"
+          value={additionalInfo}
+          onChangeText={(text) => setAdditionalInfo(text)}
+          multiline
+          numberOfLines={4}
+        /> */}
       </SafeAreaView>
 
       {total === 0 ? null : (
@@ -230,7 +233,37 @@ const PickUpScreen = () => {
     </>
   );
 };
-
+const styles = StyleSheet.create({
+  container: {
+    flex: 1,
+    backgroundColor: "#F0F0F0",
+    marginTop: 50,
+    padding: 20,
+  },
+  label: {
+    fontSize: 16,
+    fontWeight: "500",
+    marginBottom: 5,
+  },
+  input: {
+    padding: 15,
+    borderColor: "gray",
+    borderWidth: 0.7,
+    borderRadius: 9,
+    marginBottom: 20,
+    backgroundColor: "white",
+  },
+  dateButton: {
+    padding: 15,
+    borderColor: "gray",
+    borderWidth: 0.7,
+    borderRadius: 9,
+    marginBottom: 20,
+    backgroundColor: "white",
+    justifyContent: "center",
+  },
+  dateText: {
+    color: "#555",
+  },
+});
 export default PickUpScreen;
-
-const styles = StyleSheet.create({});
